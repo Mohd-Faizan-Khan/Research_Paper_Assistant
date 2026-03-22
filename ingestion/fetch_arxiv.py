@@ -15,19 +15,20 @@ OUTPUT_FILE = OUTPUT_PATH / "papers_raw.json"
 #arXiv search function
 
 def fetch_arxiv_papers(
-    query="cat:cs.AI OR cat:cs.LG OR stat.ML",
-    max_results=5000
+    query="""
+    (cat:cs.AI OR cat:cs.LG OR stat.ML)
+    AND (transformer OR "large language model" OR diffusion OR "graph neural network" OR "reinforcement learning")
+    """, max_results=10000
 ):
     search = arxiv.Search(
         query=query,
         max_results=max_results,
-        sort_by=arxiv.SortCriterion.SubmittedDate
     )
 
     papers = []
 
     client = arxiv.Client()
-    for result in tqdm(client.results(search)):
+    for result in tqdm(client.results(search), total=max_results):
         paper = {
             "title": result.title,
             "abstract": result.summary,
