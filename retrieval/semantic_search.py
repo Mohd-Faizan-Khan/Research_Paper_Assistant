@@ -55,9 +55,9 @@ def search(query, k=5):
 
         results.append({
             "title": paper["title"],
-            "abstract": paper["abstract"],
+            "abstract": paper["abstract"][:300],
             "pdf_url": paper["pdf_url"],
-            "score": float(distances[0][i])
+            "score": round(float(distances[0][i]), 4)
         })
 
     return results
@@ -65,14 +65,22 @@ def search(query, k=5):
 
 if __name__ == "__main__":
 
-    query = "graph neural networks"
+    test_queries = [
+        "graph neural networks",
+        "vision transformers",
+        "diffusion models",
+        "reinforcement learning"
+    ]
 
-    results = search(query)
+    for query in test_queries:
+        print(f"\n{'=' * 50}")
+        print(f"Query: {query}")
+        print(f"{'=' * 50}")
 
-    print("\nTop Results:\n")
+        results = search(query)
 
-    for i, res in enumerate(results, 1):
-        print(f"{i}. {res['title']}")
-        print(f"Score: {res['score']}")
-        print(f"PDF: {res['pdf_url']}")
-        print()
+        for i, res in enumerate(results, 1):
+            print(f"\n{i}. {res['title']}")
+            print(f"Score: {res['score']}")
+            print(f"Abstract: {res['abstract']}")
+            print(f"PDF: {res['pdf_url']}")
