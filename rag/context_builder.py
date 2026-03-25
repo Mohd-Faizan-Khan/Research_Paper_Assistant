@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from retrieval.semantic_search import search
 
 
-def build_context(query, k=5):
+def build_context(query, k=3):
     """
     Build LLM context from retrieved papers
     """
@@ -18,15 +18,15 @@ def build_context(query, k=5):
 
     for i, paper in enumerate(results, 1):
         context += f"""
-Paper {i}
-Title: {paper['title']}
+        Paper {i}
+        Title: {paper['title']}
 
-Abstract:
-{paper['abstract']}
+        Abstract:
+        {paper['abstract'][:150]}
 
-Source: {paper['pdf_url']}
----------------------
-"""
+        Source: {paper['pdf_url']}
+        ---------------------
+        """
 
     return context
 

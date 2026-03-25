@@ -32,7 +32,7 @@ with open(METADATA_PATH, "rb") as f:
     metadata = pickle.load(f)
 
 
-def search(query, k=5):
+def search(query, k=3):
     """
     Search similar papers using semantic search
     """
@@ -55,7 +55,7 @@ def search(query, k=5):
 
         results.append({
             "title": paper["title"],
-            "abstract": paper["abstract"][:300],
+            "abstract": paper["abstract"][:150],
             "pdf_url": paper["pdf_url"],
             "score": round(float(distances[0][i]), 4)
         })
