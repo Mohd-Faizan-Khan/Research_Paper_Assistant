@@ -2,6 +2,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from rag.llm import generate_response
 from rag.context_builder import build_context
 
@@ -9,11 +10,11 @@ from rag.context_builder import build_context
 def ask(query):
     """
     Full RAG pipeline:
-    query → retrieve → build context → LLM answer
+    query -> retrieve -> build context -> LLM answer
     """
 
     print("\nBuilding context...")
-    context = build_context(query)
+    context, sources = build_context(query)
 
     prompt = f"""
     You are an AI research assistant.
@@ -33,19 +34,26 @@ def ask(query):
 
     Answer:
     """
+
     print("\nGenerating answer using phi3:mini...\n")
 
-    return generate_response(prompt)
+    answer = generate_response(prompt)
+
+    return answer, sources
 
 
 if __name__ == "__main__":
 
-    query = "How do graph neural networks work?"
+    query = "What is reinforcement learning?"
 
-    answer = ask(query)
+    answer, sources = ask(query)
 
     print("\n" + "="*50)
     print("AI Answer:")
     print("="*50 + "\n")
 
     print(answer)
+
+    print("\nSources:\n")
+    for s in sources:
+        print("-", s["title"])

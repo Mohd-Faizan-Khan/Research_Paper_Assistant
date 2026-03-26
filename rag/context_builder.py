@@ -28,7 +28,7 @@ def build_context(query, k=3):
         ---------------------
         """
 
-    return context
+    return context,results
 
 
 if __name__ == "__main__":
