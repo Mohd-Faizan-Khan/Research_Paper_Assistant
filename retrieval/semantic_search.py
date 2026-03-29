@@ -16,26 +16,48 @@ INDEX_PATH = "vector_store/faiss_index.bin"
 METADATA_PATH = "embeddings/paper_metadata.pkl"
 
 
-# Load embedding model
-print("Loading embedding model...")
-model = SentenceTransformer("all-MiniLM-L6-v2")
+# Lazy loaded globals
+model = None
+index = None
+metadata = None
 
 
-# Load FAISS index
-print("Loading FAISS index...")
-index = faiss.read_index(INDEX_PATH)
+def load_model():
+    global model
+    if model is None:
+        print("Loading embedding model...")
+        model = SentenceTransformer(
+            "all-MiniLM-L6-v2",
+            local_files_only=True
+        )
+    return model
 
 
-# Load metadata
-print("Loading metadata...")
-with open(METADATA_PATH, "rb") as f:
-    metadata = pickle.load(f)
+def load_index():
+    global index
+    if index is None:
+        print("Loading FAISS index...")
+        index = faiss.read_index(INDEX_PATH)
+    return index
+
+
+def load_metadata():
+    global metadata
+    if metadata is None:
+        print("Loading metadata...")
+        with open(METADATA_PATH, "rb") as f:
+            metadata = pickle.load(f)
+    return metadata
 
 
 def search(query, k=3):
     """
     Search similar papers using semantic search
     """
+
+    model = load_model()
+    index = load_index()
+    metadata = load_metadata()
 
     print(f"\nQuery: {query}")
 

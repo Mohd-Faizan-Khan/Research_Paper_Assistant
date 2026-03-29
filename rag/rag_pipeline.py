@@ -7,7 +7,7 @@ from rag.llm import generate_response
 from rag.context_builder import build_context
 
 
-def ask(query):
+def ask_question(query):
     """
     Full RAG pipeline:
     query -> retrieve -> build context -> LLM answer
@@ -39,14 +39,17 @@ def ask(query):
 
     answer = generate_response(prompt)
 
-    return answer, sources
+    return {
+        "answer": answer,
+        "sources": sources
+    }
 
 
 if __name__ == "__main__":
 
     query = "What is reinforcement learning?"
 
-    answer, sources = ask(query)
+    answer, sources = ask_question(query)
 
     print("\n" + "="*50)
     print("AI Answer:")
