@@ -108,18 +108,14 @@ def explain(request: ExplainRequest):
 # Analytics 
 # -----------------------------
 
-@app.get("/analytics")
-def analytics():
-    import pandas as pd
+from functools import lru_cache
+import pandas as pd
 
+@lru_cache()
+def load_analytics_data():
     df = pd.read_csv("data/processed/papers_clean.csv")
 
-    df["category"] = df["category"].apply(lambda x: x.split()[0])
-
-    # papers per year
     papers_per_year = df["year"].value_counts().sort_index()
-
-    # category distribution
     category_dist = df["category"].value_counts().head(10)
 
     return {
@@ -132,3 +128,8 @@ def analytics():
             "values": category_dist.values.tolist()
         }
     }
+
+
+@app.get("/analytics")
+def analytics():
+    return load_analytics_data()

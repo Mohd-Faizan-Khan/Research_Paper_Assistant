@@ -47,10 +47,12 @@ async function askAI() {
     const resultsDiv = document.getElementById("askResults")
     const btn = document.getElementById("askBtn")
 
+    // prevent empty input
+    if (!question.trim()) return
+
     btn.disabled = true
 
-
-    // show spinner
+    // spinner
     resultsDiv.innerHTML = `
         <div class="thinking">
             <div class="spinner"></div>
@@ -58,60 +60,97 @@ async function askAI() {
         </div>
     `
 
-    const res = await fetch(`${API}/ask`, {
-        method:"POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({question})
-    })
+    try {
+        const res = await fetch(`${API}/ask`, {
+            method:"POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({question})
+        })
 
-    const data = await res.json()
+        const data = await res.json()
 
-    let html = `
-        <div class="card">
-            <b>Answer:</b>
-            <p>${data.answer}</p>
-        </div>
-    `
-
-    if (data.sources) {
-        html += `
-        <div class="card">
-            <b>Sources:</b>
-            <ul>
-                ${data.sources.map(s => `
-                    <li>
-                        <a href="${s.pdf_url}" target="_blank">
-                            ${s.title}
-                        </a>
-                    </li>
-                `).join("")}
-            </ul>
-        </div>
+        let html = `
+            <div class="card">
+                <b>Answer:</b>
+                <p>${data.answer}</p>
+            </div>
         `
+
+        if (data.sources) {
+            html += `
+            <div class="card">
+                <b>Sources:</b>
+                <ul>
+                    ${data.sources.map(s => `
+                        <li>
+                            <a href="${s.pdf_url}" target="_blank">
+                                ${s.title}
+                            </a>
+                        </li>
+                    `).join("")}
+                </ul>
+            </div>
+            `
+        }
+
+        resultsDiv.innerHTML = html
+
+        // smooth scroll to result
+        resultsDiv.scrollIntoView({ behavior: "smooth" })
+
+    } catch (err) {
+        resultsDiv.innerHTML = `
+            <div class="card">
+                Error generating response. Please try again.
+            </div>
+        `
+    } finally {
+        btn.disabled = false
     }
-
-    resultsDiv.innerHTML = html
-    btn.disabled = false
 }
-
 
 async function explainPaper() {
     const text = document.getElementById("explainInput").value
+    const resultsDiv = document.getElementById("explainResults")
+    const btn = document.getElementById("explainBtn")
 
-    const res = await fetch(`${API}/explain`, {
-        method:"POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({text})
-    })
+    btn.disabled = true
 
-    const data = await res.json()
+    if (!text.trim()) return
 
-    document.getElementById("explainResults").innerHTML = `
-        <div class="card">
-            <b>${data.title}</b>
-            <p>${data.explanation}</p>
+    resultsDiv.innerHTML = `
+        <div class="thinking">
+            <div class="spinner"></div>
+            <span>Explaining paper...</span>
         </div>
     `
+
+    try {
+        const res = await fetch(`${API}/explain`, {
+            method:"POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({text})
+        })
+
+        const data = await res.json()
+
+        resultsDiv.innerHTML = `
+            <div class="card">
+                <b>${data.title}</b>
+                <p>${data.explanation}</p>
+            </div>
+        `
+
+        resultsDiv.scrollIntoView({ behavior: "smooth" })
+
+    } catch {
+        resultsDiv.innerHTML = `
+            <div class="card">
+                Error explaining paper
+            </div>
+        `
+    }
+    btn.disabled = false
 }
 
 function toggleReadMore(i) {
