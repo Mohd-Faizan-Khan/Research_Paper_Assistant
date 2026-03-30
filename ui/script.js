@@ -44,6 +44,19 @@ async function searchPapers() {
 
 async function askAI() {
     const question = document.getElementById("askInput").value
+    const resultsDiv = document.getElementById("askResults")
+    const btn = document.getElementById("askBtn")
+
+    btn.disabled = true
+
+
+    // show spinner
+    resultsDiv.innerHTML = `
+        <div class="thinking">
+            <div class="spinner"></div>
+            <span>Thinking...</span>
+        </div>
+    `
 
     const res = await fetch(`${API}/ask`, {
         method:"POST",
@@ -53,12 +66,32 @@ async function askAI() {
 
     const data = await res.json()
 
-    document.getElementById("askResults").innerHTML = `
+    let html = `
         <div class="card">
             <b>Answer:</b>
             <p>${data.answer}</p>
         </div>
     `
+
+    if (data.sources) {
+        html += `
+        <div class="card">
+            <b>Sources:</b>
+            <ul>
+                ${data.sources.map(s => `
+                    <li>
+                        <a href="${s.pdf_url}" target="_blank">
+                            ${s.title}
+                        </a>
+                    </li>
+                `).join("")}
+            </ul>
+        </div>
+        `
+    }
+
+    resultsDiv.innerHTML = html
+    btn.disabled = false
 }
 
 
