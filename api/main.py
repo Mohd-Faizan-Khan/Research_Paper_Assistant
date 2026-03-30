@@ -9,9 +9,19 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from retrieval.semantic_search import search
 from rag.rag_pipeline import ask_question
 from rag.paper_explainer import explain_paper
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI(title="Research Paper AI")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # -----------------------------

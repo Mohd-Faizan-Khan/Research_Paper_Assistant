@@ -11,4 +11,5 @@ def generate_response(prompt):
         return response['message']['content']
 
     except Exception as e:
-        return f"Error: {str(e)}"
+        print("LLM Error:", e)
+        return "Model temporarily unavailable. Please retry."

@@ -77,7 +77,7 @@ def search(query, k=3):
 
         results.append({
             "title": paper["title"],
-            "abstract": paper["abstract"][:150],
+            "abstract": paper["abstract"],
             "pdf_url": paper["pdf_url"],
             "score": round(float(distances[0][i]), 4)
         })

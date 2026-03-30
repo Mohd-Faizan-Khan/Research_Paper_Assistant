@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Paper AI</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="header">
+Research Paper AI Assistant
+</div>
+
+<div class="container">
+
+<div class="section">
+<h3>Search Papers</h3>
+<input id="searchInput" placeholder="Search research papers..." />
+<button onclick="searchPapers()">Search</button>
+
+<div id="searchResults" class="results"></div>
+</div>
+
+<div class="section">
+<h3>Ask AI</h3>
+<textarea id="askInput" rows="3" placeholder="Ask research question..."></textarea>
+<button onclick="askAI()">Ask</button>
+
+<div id="askResults" class="results"></div>
+</div>
+
+<div class="section">
+<h3>Explain Paper</h3>
+<input id="explainInput" placeholder="Enter topic to explain..." />
+<button onclick="explainPaper()">Explain</button>
+
+<div id="explainResults" class="results"></div>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
