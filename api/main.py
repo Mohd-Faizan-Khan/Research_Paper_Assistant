@@ -103,3 +103,32 @@ def explain(request: ExplainRequest):
         "explanation": explanation,
         "pdf_url": paper["pdf_url"]
     }
+
+# -----------------------------
+# Analytics 
+# -----------------------------
+
+@app.get("/analytics")
+def analytics():
+    import pandas as pd
+
+    df = pd.read_csv("data/processed/papers_clean.csv")
+
+    df["category"] = df["category"].apply(lambda x: x.split()[0])
+
+    # papers per year
+    papers_per_year = df["year"].value_counts().sort_index()
+
+    # category distribution
+    category_dist = df["category"].value_counts().head(10)
+
+    return {
+        "papers_per_year": {
+            "labels": papers_per_year.index.tolist(),
+            "values": papers_per_year.values.tolist()
+        },
+        "categories": {
+            "labels": category_dist.index.tolist(),
+            "values": category_dist.values.tolist()
+        }
+    }

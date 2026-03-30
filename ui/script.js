@@ -134,3 +134,55 @@ function toggleReadMore(i) {
     }
 }
 
+
+async function loadAnalytics() {
+    const res = await fetch(`${API}/analytics`)
+    const data = await res.json()
+
+    document.getElementById("analyticsResults").innerHTML = `
+        <div class="card">
+            <canvas id="yearChart"></canvas>
+        </div>
+
+        <div class="card">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    `
+
+    new Chart(document.getElementById("yearChart"), {
+        type: "bar",
+        data: {
+            labels: data.papers_per_year.labels,
+            datasets: [{
+                label: "Papers per Year",
+                data: data.papers_per_year.values
+            }]
+        },
+        options: {
+        plugins: {
+            title: {
+                display: true,
+                text: "Research Papers Published Per Year"
+            }
+        }
+    }
+    })
+
+    new Chart(document.getElementById("categoryChart"), {
+        type: "pie",
+        data: {
+            labels: data.categories.labels,
+            datasets: [{
+                data: data.categories.values
+            }]
+        },
+        options: {
+        plugins: {
+            title: {
+                display: true,
+                text: "Top Research Categories"
+            }
+        }
+    }
+    })
+}
