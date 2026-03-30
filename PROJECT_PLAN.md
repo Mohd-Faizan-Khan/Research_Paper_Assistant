@@ -1,38 +1,98 @@
-# AI Research Paper Assistant — Project Plan (Initial)
+# AI Research Paper Assistant — Project Plan
 
 ## Goal
-Build an AI-powered research assistant that can search and analyze research papers using semantic search and RAG.
 
-## Architecture
+Build an end-to-end AI-powered research assistant capable of searching, analyzing, and explaining research papers using semantic search and Retrieval-Augmented Generation (RAG).
 
-arXiv API
+The system runs fully locally using embeddings, FAISS vector search, and a local LLM via Ollama.
+
+---
+
+## Final System Architecture
+
+arXiv Dataset
 ↓
-Data ingestion
+Data Ingestion
 ↓
-Data cleaning
+Data Cleaning & Processing
 ↓
-Embedding generation
+Embedding Generation (Sentence Transformers)
 ↓
-FAISS vector database
+FAISS Vector Database
 ↓
-Semantic retrieval
+Semantic Retrieval
 ↓
-RAG pipeline (Llama3 via Ollama)
+RAG Pipeline (phi3 / llama3 via Ollama)
 ↓
-Streamlit UI
+FastAPI Backend
+↓
+HTML / CSS / JavaScript UI
+
+---
 
 ## Development Phases
 
 Phase 1 — Foundation
+Project structure, environment setup, local LLM
+
 Phase 2 — Data Pipeline
+arXiv ingestion, dataset cleaning, validation
+
 Phase 3 — Retrieval Engine
+Embeddings, FAISS index, semantic search
+
 Phase 4 — RAG System
-Phase 5 — UI
-Phase 6 — Portfolio polish
+Context builder, AI question answering, paper explanation
 
-## Expected Features
+Phase 5 — Product UI
+Search page, Ask AI interface, Explain paper, Analytics dashboard
 
-- Semantic research paper search
-- AI question answering
-- Paper explanation
-- Research trend analytics
+Phase 6 — Performance & Polish
+Caching, loading states, error handling, UX improvements
+
+Phase 7 — Portfolio Packaging
+README, screenshots, documentation, repo cleanup
+
+---
+
+## Implemented Features
+
+* Semantic research paper search
+* RAG-based AI question answering
+* Research paper explanation (simplified)
+* Research trends analytics dashboard
+* FastAPI backend API
+* Custom HTML/CSS/JS frontend
+* FAISS vector similarity search
+* Local LLM inference (Ollama)
+* Loading spinners and UX improvements
+* Analytics caching for performance
+* Error handling and input validation
+
+---
+
+## API Endpoints
+
+POST /search — semantic search
+POST /ask — RAG question answering
+POST /explain — paper explanation
+GET /analytics — research trends dashboard
+
+---
+
+## Tech Stack
+
+Python
+FastAPI
+Sentence Transformers
+FAISS
+Ollama (phi3 / llama3)
+HTML / CSS / JavaScript
+Chart.js
+Pandas / NumPy
+
+---
+
+## Status
+
+Project completed with full end-to-end functionality and UI.
